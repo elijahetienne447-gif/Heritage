@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Aux-Lyons La Rose Festival",
+    "position": [
+      1.4550572633743286,
+      0.17179402709007263,
+      1.3711744546890259
+    ],
+    "type": "video",
+    "path": "media/Aux- Lyons La Rose - St. Lucia.mp4",
+    "description": "The celebration of the La Rose festival in Aux Lyons"
+  },
+  {
+    "name": "History of the Castries Fire",
+    "position": [
+      0.05225328356027603,
+      0.01938462257385254,
+      2.5500617027282715
+    ],
+    "type": "video",
+    "path": "media/Castries_Fire_1948_unrulynationn.mp4",
+    "description": "A brief history of the great Castries fire"
+  },
+  {
+    "name": "Choiseul Village Aerial View",
+    "position": [
+      -1.3633712530136108,
+      0.05747818946838379,
+      -2.4809248447418213
+    ],
+    "type": "video",
+    "path": "media/drone footage of Choiseul village.mp4",
+    "description": "Drone video of the Choiseul Village"
+  },
+  {
+    "name": "The Oliphe Blossome",
+    "position": [
+      0.8999998569488525,
+      0.27499955892562866,
+      -3.1383748054504395
+    ],
+    "type": "video",
+    "path": "media/The_Oliphe_Blossome.mp4",
+    "description": "THE OLIPHE BLOSSOME"
+  },
+  {
+    "name": "Thomazo Bakery (Dennery",
+    "position": [
+      0.8149510025978088,
+      0.14090628921985626,
+      0.7943078279495239
+    ],
+    "type": "video",
+    "path": "media/LOCAL CREOLE BREAD THOMAZO DENNERY, ST. LUCIA.mp4",
+    "description": "A bakery in Saint Lucia which still uses the traditional medthod of baking bread in a large stone oven"
+  },
+  {
+    "name": "Pigeon Island Beach",
+    "position": [
+      0.37314915657043457,
+      -0.0060918331146240234,
+      4.167799472808838
+    ],
+    "type": "video",
+    "path": "media/Pigeon_Island_Beach_yormaaan06.mp4",
+    "description": "A bakery in Saint Lucia which still uses the traditional medthod of baking bread in a large stone oven"
+  },
+  {
+    "name": "Micoud Village Aerial View",
+    "position": [
+      1.7026386260986328,
+      0.29147055745124817,
+      -1.4748167991638184
+    ],
+    "type": "video",
+    "path": "media/Pigeon_Island_Beach_yormaaan06.mp4",
+    "description": "A bakery in Saint Lucia which still uses the traditional medthod of baking bread in a large stone oven"
+  },
+  {
+    "name": "La Rose Celebration in Rodney Bay",
+    "position": [
+      0.5225784778594971,
+      0.024819374084472656,
+      3.6590890884399414
+    ],
+    "type": "video",
+    "path": "media/St. Lucia La Rose Celebration.mp4",
+    "description": "A bakery in Saint Lucia which still uses the traditional medthod of baking bread in a large stone oven"
+  }
+]
