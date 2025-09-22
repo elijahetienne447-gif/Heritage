@@ -1,0 +1,157 @@
+from enum import Enum
+from typing import List, Optional
+
+# Enums for icons, representing visual elements in the UI.
+class Icon(Enum):
+    NAVIGATE = "navigate_icon.png"
+    LISTEN = "listen_icon.png"
+    WATCH = "watch_icon.png"
+    BACK = "back_arrow.png"
+    TIMELINE = "timeline_icon.png"
+    PLAY = "play_icon.png"
+
+# A simple class to represent a clickable button in the UI.
+class Button:
+    def __init__(self, text: str, icon: Optional[Icon] = None, action: callable = None):
+        self.text = text
+        self.icon = icon
+        self.action = action
+
+# A class to represent a media link, which could be an audio or video.
+class MediaLink:
+    def __init__(self, title: str, url: str, media_type: str):
+        self.title = title
+        self.url = url
+        self.media_type = media_type
+
+# The main screen class, which holds all the content and UI elements.
+class AppScreen:
+    def __init__(self, title: str, subtitle: Optional[str] = None, image_url: Optional[str] = None):
+        self.title = title
+        self.subtitle = subtitle
+        self.image_url = image_url
+        self.description: Optional[str] = None
+        self.buttons: List[Button] = []
+        self.media_links: List[MediaLink] = []
+        self.back_button_action: Optional[callable] = None
+
+    def set_description(self, content: str):
+        self.description = content
+
+    def add_button(self, button: Button):
+        self.buttons.append(button)
+
+    def add_media_link(self, media_link: MediaLink):
+        self.media_links.append(media_link)
+
+    def set_back_button(self, action: callable):
+        self.back_button_action = action
+
+    def display(self):
+        # This method conceptually "renders" the screen.
+        print("---------------------------------")
+        if self.image_url:
+            print(f"Image: {self.image_url}")
+        if self.title:
+            print(f"Title: {self.title}")
+        if self.subtitle:
+            print(f"Subtitle: {self.subtitle}")
+        print("---------------------------------")
+        if self.description:
+            print(f"Description: {self.description}")
+        
+        print("\n--- Media Links ---")
+        if self.media_links:
+            for link in self.media_links:
+                print(f"[{link.media_type.upper()}] {link.title}: {link.url}")
+        else:
+            print("No multimedia links available.")
+            
+        print("\n--- Actions ---")
+        for button in self.buttons:
+            print(f"Button: {button.text} (Icon: {button.icon.name if button.icon else 'None'})")
+        print("---------------------------------")
+
+# --- Instantiating the screen with multimedia links and navigation ---
+
+def open_url(url: str):
+    """A placeholder function that would open a URL in a real application."""
+    print(f"Opening URL: {url}")
+
+def go_back():
+    print("Returning to previous screen...")
+
+def navigate_to_map(destination: str, map_url: str):
+    """
+    A function that simulates navigating to a destination.
+    This now includes the map URL from the maps_navigation tool.
+    """
+    print(f"Navigating to {destination}...")
+    print(f"Route URL: {map_url}")
+
+# Create the main screen object
+fort_rodney_screen = AppScreen(
+    title="Fort Rodney",
+    subtitle="Pigeon Island",
+    image_url="fort_rodney_image.jpg" # Placeholder image URL
+)
+
+# Set the screen's description
+fort_rodney_screen.set_description(
+    "Built by the British in 1778. Fort Rodney offers panoramic views of the island and once played a key role in naval battles with the French."
+)
+
+# Add media links from external sources
+fort_rodney_screen.add_media_link(
+    MediaLink(
+        title="Fort Rodney & Signal Hill",
+        url="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        media_type="video"
+    )
+)
+fort_rodney_screen.add_media_link(
+    MediaLink(
+        title="Pigeon Island Walking Tour",
+        url="https://www.youtube.com/watch?v=abcde12345",
+        media_type="video"
+    )
+)
+fort_rodney_screen.add_media_link(
+    MediaLink(
+        title="Historical Audio Tour of Pigeon Island",
+        url="https://www.some-audio-site.com/fort-rodney-tour",
+        media_type="audio"
+    )
+)
+
+# Get the map URL from the maps_navigation tool output
+# We assume the API call has already been made and we have the result.
+map_route_url = "https://www.google.com/maps/dir//Fort+Rodney,+32RM%2BG72,+St.+Lucia/data=!4m9!4m8!1m0!1m5!1m1!19sChIJZXI2as1pQIwRI7tytxp3Jgw!2m2!1d-60.966849999999994!2d14.091252599999999!3e0!11m1!6b1"
+destination_name = "Fort Rodney, Pigeon Island, Saint Lucia"
+
+# Create the action buttons, with the navigate button now calling the new function.
+navigate_button = Button(
+    text="Navigate",
+    icon=Icon.NAVIGATE,
+    action=lambda: navigate_to_map(destination_name, map_route_url)
+)
+listen_button = Button(
+    text="Listen",
+    icon=Icon.LISTEN,
+    action=lambda: open_url(fort_rodney_screen.media_links[2].url)
+)
+watch_button = Button(
+    text="Watch\nDocumentary",
+    icon=Icon.WATCH,
+    action=lambda: open_url(fort_rodney_screen.media_links[0].url)
+)
+
+fort_rodney_screen.add_button(navigate_button)
+fort_rodney_screen.add_button(listen_button)
+fort_rodney_screen.add_button(watch_button)
+
+# Set the back button action
+fort_rodney_screen.set_back_button(go_back)
+
+# Display a conceptual representation of the screen's contents
+fort_rodney_screen.display()

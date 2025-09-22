@@ -1,0 +1,86 @@
+/*
+ * This CSS code implements a color scheme inspired by the Saint Lucian flag.
+ * Blue is used for the background, yellow for buttons and accents, and black for text.
+ * The colors are defined using CSS variables for easy modification.
+ */
+
+:root {
+  /* Saint Lucian Flag Colors */
+  --st-lucia-blue: #6495ED;  /* A calming blue, reminiscent of the sky and sea */
+  --st-lucia-yellow: #FFD700; /* A bright gold/yellow for the sun and prosperity */
+  --st-lucia-black: #000000; /* A sharp black for text and contrast */
+  --st-lucia-white: #ffffff; /* A clean white for the other part of the central symbol */
+}
+
+body {
+  /* Use the blue for the overall page background */
+  background-color: var(--st-lucia-blue);
+  color: var(--st-lucia-black); /* Set all text to black by default */
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  /* A container to hold the app's content with a subtle style */
+  background-color: var(--st-lucia-white);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+h1, h2, h3 {
+  /* Ensure headings are a strong black */
+  color: var(--st-lucia-black);
+}
+
+p {
+  /* Set paragraph text color */
+  color: var(--st-lucia-black);
+  line-height: 1.6;
+}
+
+button {
+  /* Style for interactive buttons */
+  background-color: var(--st-lucia-yellow);
+  color: var(--st-lucia-black);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  /* Slightly darker yellow on hover for a better user experience */
+  background-color: #e6b800;
+}
+
+/* Example of using the black and white for the central symbol */
+.st-lucia-symbol {
+  width: 100px;
+  height: 100px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.st-lucia-symbol::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 80%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: conic-gradient(from 45deg, var(--st-lucia-black) 0% 25%, var(--st-lucia-white) 25% 50%, var(--st-lucia-black) 50% 75%, var(--st-lucia-white) 75% 100%);
+  border-radius: 50%;
+}
+
