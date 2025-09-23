@@ -6,7 +6,8 @@ import random
 st.set_page_config(
     page_title="Caribbean Cultural Heritage Explorer", 
     layout="wide",
-    page_icon="🏝️"
+    page_icon="🏝️",
+    initial_sidebar_state="expanded"  # Force sidebar to show
 )
 
 # Initialize session state
@@ -19,8 +20,82 @@ def initialize_session_state():
         st.session_state['score'] = 0
     if 'current_view' not in st.session_state:
         st.session_state['current_view'] = 'home'
+    if 'selected_region' not in st.session_state:
+        st.session_state['selected_region'] = None
 
 initialize_session_state()
+
+# Add navigation sidebar
+def create_navigation():
+    """Create navigation sidebar"""
+    with st.sidebar:
+        st.markdown("## 🏝️ Navigation")
+        
+        # Home button
+        if st.button("🏠 Home", use_container_width=True, key="nav_home"):
+            st.session_state.current_view = 'home'
+            st.session_state.selected_island = None
+            st.rerun()
+        
+        st.markdown("---")
+        
+        # Quick access to regions
+        st.markdown("### 🗺️ Regions")
+        
+        region_buttons = {
+            "Greater Antilles": "🏝️",
+            "Lesser Antilles": "🌴", 
+            "Netherlands Antilles": "🇳🇱",
+            "French Caribbean": "🇫🇷"
+        }
+        
+        for region, icon in region_buttons.items():
+            if st.button(f"{icon} {region}", use_container_width=True, key=f"nav_{region}"):
+                st.session_state.current_view = 'region'
+                st.session_state.selected_region = region
+                st.rerun()
+        
+        st.markdown("---")
+        
+        # Quick access to popular islands
+        st.markdown("### ⭐ Popular Islands")
+        
+        popular_islands = ["Jamaica", "Barbados", "Trinidad and Tobago", "Saint Lucia", "Cuba"]
+        
+        for island in popular_islands:
+            # Find if this island exists in our data
+            island_exists = False
+            flag = "🏝️"  # default flag
+            for region_data in CARIBBEAN_ISLANDS.values():
+                if island in region_data:
+                    flag = region_data[island]['flag']
+                    island_exists = True
+                    break
+            
+            if island_exists and st.button(f"{flag} {island}", use_container_width=True, key=f"nav_island_{island}"):
+                st.session_state.selected_island = island
+                st.session_state.current_view = 'island_detail'
+                st.rerun()
+        
+        st.markdown("---")
+        
+        # Quiz button
+        if st.button("🧠 Caribbean Quiz", use_container_width=True, key="nav_quiz"):
+            st.session_state.current_view = 'quiz'
+            st.rerun()
+        
+        st.markdown("---")
+        
+        # Additional features
+        st.markdown("### 📊 Features")
+        
+        if st.button("📈 Statistics", use_container_width=True, key="nav_stats"):
+            st.session_state.current_view = 'statistics'
+            st.rerun()
+            
+        if st.button("🎭 Culture Guide", use_container_width=True, key="nav_culture"):
+            st.session_state.current_view = 'culture_guide'
+            st.rerun()
 
 # Caribbean islands data structure
 CARIBBEAN_ISLANDS = {
@@ -255,7 +330,7 @@ CARIBBEAN_ISLANDS = {
     }
 }
 
-# Enhanced CSS for Caribbean theme
+# Enhanced CSS for Caribbean theme with sidebar styling
 def load_caribbean_css():
     st.markdown("""
     <style>
@@ -263,6 +338,42 @@ def load_caribbean_css():
     
     * {
         font-family: 'Poppins', sans-serif;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .css-1d391kg .element-container {
+        background: transparent;
+    }
+    
+    /* Sidebar navigation buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white !important;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        font-weight: 600;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.2));
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    /* Sidebar text */
+    .css-1d391kg h2, .css-1d391kg h3 {
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+    
+    .css-1d391kg p, .css-1d391kg .markdown-text-container {
+        color: rgba(255,255,255,0.9);
     }
     
     .main {
@@ -604,9 +715,6 @@ def load_caribbean_css():
     }
     </style>
     """, unsafe_allow_html=True)
-
-# Load the CSS
-load_caribbean_css()
 
 def get_caribbean_daily_fact():
     """Get a daily Caribbean fact"""
@@ -993,11 +1101,80 @@ def render_featured_content():
             st.session_state.current_view = 'island_detail'
             st.rerun()
 
+def render_region_view(region_name):
+    """Render a specific region view"""
+    st.markdown(f"## 🏝️ {region_name}")
+    
+    if region_name in CARIBBEAN_ISLANDS:
+        islands = CARIBBEAN_ISLANDS[region_name]
+        
+        cols = st.columns(min(3, len(islands)))
+        
+        for idx, (island_name, island_data) in enumerate(islands.items()):
+            col_idx = idx % len(cols)
+            
+            with cols[col_idx]:
+                if st.button(
+                    f"{island_data['flag']} {island_name}",
+                    key=f"region_btn_{island_name}",
+                    use_container_width=True
+                ):
+                    st.session_state.selected_island = island_name
+                    st.session_state.current_view = 'island_detail'
+                    st.rerun()
+                
+                st.write(f"**Capital:** {island_data['capital']}")
+                st.write(f"**Population:** {island_data['population']}")
+
+def render_statistics_view():
+    """Render statistics view"""
+    st.markdown("## 📊 Caribbean Statistics")
+    
+    total_islands = sum(len(islands) for islands in CARIBBEAN_ISLANDS.values())
+    total_population = "44+ million"
+    languages_count = "10+ major languages"
+    unesco_sites = sum(1 for region in CARIBBEAN_ISLANDS.values() 
+                      for island in region.values() 
+                      for site in island.get('unesco_sites', []) if site)
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric("Islands Featured", total_islands)
+    with col2:
+        st.metric("Total Population", total_population)
+    with col3:
+        st.metric("Languages", languages_count)
+    with col4:
+        st.metric("UNESCO Sites", unesco_sites)
+
+def render_culture_guide():
+    """Render culture guide view"""
+    st.markdown("## 🎭 Caribbean Culture Guide")
+    
+    st.markdown("### Music Genres by Island")
+    
+    music_data = {
+        "Jamaica": "Reggae, Dancehall",
+        "Trinidad and Tobago": "Calypso, Soca, Steel Pan",
+        "Cuba": "Salsa, Rumba, Mambo",
+        "Dominican Republic": "Merengue, Bachata",
+        "Puerto Rico": "Salsa, Reggaeton",
+        "Barbados": "Calypso, Soca",
+        "Martinique": "Zouk"
+    }
+    
+    for island, music in music_data.items():
+        st.write(f"**{island}:** {music}")
+
 def main():
     """Main application function"""
     
     # Load CSS
     load_caribbean_css()
+    
+    # Create navigation sidebar
+    create_navigation()
     
     # Container for the entire app
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
@@ -1005,6 +1182,19 @@ def main():
     # Handle different views
     if st.session_state.current_view == 'island_detail' and st.session_state.selected_island:
         render_island_detail(st.session_state.selected_island)
+        
+    elif st.session_state.current_view == 'region':
+        render_region_view(st.session_state.get('selected_region', 'Greater Antilles'))
+        
+    elif st.session_state.current_view == 'quiz':
+        render_caribbean_quiz()
+        
+    elif st.session_state.current_view == 'statistics':
+        render_statistics_view()
+        
+    elif st.session_state.current_view == 'culture_guide':
+        render_culture_guide()
+        
     else:
         # Home view
         render_header()
@@ -1012,7 +1202,6 @@ def main():
         render_daily_fact()
         render_featured_content()
         render_island_regions()
-        render_caribbean_quiz()
     
     # Footer
     st.markdown("---")
